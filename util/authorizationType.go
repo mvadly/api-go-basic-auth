@@ -12,13 +12,16 @@ type UserBasicAuth struct {
 	Password string
 }
 
+func (UserBasicAuth) TableName() string {
+	return "user_basic_auth"
+}
+
 func BasicAuth(c *gin.Context) {
 	var result UserBasicAuth
 	username, password, hasAuth := c.Request.BasicAuth()
 	authorization := fmt.Sprintf("%v", c.Request.Header["Authorization"])
-	if len(authorization) > 0 && authorization[1:6] == "Basic" {
+	if len(authorization) >= 6 && authorization[1:6] == "Basic" {
 		check := config.ConnectDB().Debug().
-			Table("user_basic_auth").
 			Select("username, password").
 			Where("username = ? AND password = MD5(?) ", username, password).First(&result)
 

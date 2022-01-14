@@ -10,7 +10,7 @@ func Router(r *gin.Engine) {
 	r.Use(util.BasicAuth)
 	v1 := r.Group("/v1")
 	{
-		v1.GET("auth/credential/login", Login)
+		v1.POST("auth/credential/login", Login)
 	}
 
 }
