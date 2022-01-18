@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	config.InitEnv()
+	config.ConnectDB()
 
 	routes := gin.Default()
 	auth.Router(routes)

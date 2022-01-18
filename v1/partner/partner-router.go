@@ -11,6 +11,7 @@ func Router(r *gin.Engine) {
 	v1 := r.Group("/v1/partner/")
 	{
 		v1.GET("get_data_klaster", GetDataKlaster)
+		v1.POST("processed_data_klaster", ProcessedDataKlaster)
 	}
 
 }
