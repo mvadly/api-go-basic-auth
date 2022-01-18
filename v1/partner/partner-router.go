@@ -12,6 +12,7 @@ func Router(r *gin.Engine) {
 	{
 		v1.GET("get_data_klaster", GetDataKlaster)
 		v1.POST("processed_data_klaster", ProcessedDataKlaster)
+		v1.POST("upload_file", UploadFile)
 	}
 
 }

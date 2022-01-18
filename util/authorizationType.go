@@ -25,8 +25,9 @@ func BasicAuth(c *gin.Context) {
 	if len(authorization) >= 6 && authorization[1:6] == "Basic" {
 		username, password, hasAuth := GetUserBasicAuth(c)
 		check := sql.Select("username, password").
-			Where("username = ? AND password = ? ", username, SaltMD5(username, password)).
-			First(&result)
+			Where("username = ? AND password = ? AND is_active = 1", username, SaltMD5(username, password)).
+			Limit(1).
+			Find(&result)
 
 		config.CloseDB()
 

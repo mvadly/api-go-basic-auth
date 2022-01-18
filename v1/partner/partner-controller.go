@@ -53,3 +53,14 @@ func ProcessedDataKlaster(c *gin.Context) {
 
 	c.JSON(200, gin.H{"status": true, "message": "data klaster " + save})
 }
+
+func UploadFile(c *gin.Context) {
+	upload, err := util.UploadFile(c, "file", "images/")
+	if err != nil {
+		fmt.Print(err.Error())
+		c.JSON(400, gin.H{"status": false, "message": upload})
+		return
+	}
+
+	c.JSON(200, gin.H{"status": true, "message": upload})
+}
