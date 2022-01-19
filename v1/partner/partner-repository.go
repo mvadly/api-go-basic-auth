@@ -3,7 +3,6 @@ package partner
 import (
 	"api-klasterku-partner/config"
 	"api-klasterku-partner/entity"
-	"fmt"
 	"strconv"
 	"strings"
 	"time"
@@ -58,14 +57,6 @@ func SaveProcessedData(post RequestClusterProcessed) (string, error) {
 		PeriodeData:           periodeData,
 	}
 	exist, err := GetProcessedData(post.IdKlaster, post.PeriodeData)
-	// if exist["error"] != nil {
-	// 	return "error", err
-	// }
-	// json := json.Marshal([]byte(fmt.Sprintf("%v", exist)))
-	fmt.Println("get: ", len(exist))
-
-	fmt.Println(err, ID, data)
-
 	if len(exist) > 0 {
 		data.UpdatedAt = time.Now().Local()
 		data.UpdatedBy = post.UsernameBy

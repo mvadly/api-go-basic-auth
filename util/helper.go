@@ -12,7 +12,7 @@ import (
 	"github.com/h2non/filetype"
 )
 
-var typeExt = []string{"jpg", "png", "jpeg"}
+var typeExt = []string{".jpg", ".png", ".jpeg"}
 
 func UploadFile(c *gin.Context, fileName, pathFolder string) (string, error) {
 	exist, err := Exists(pathFolder)
@@ -31,25 +31,18 @@ func UploadFile(c *gin.Context, fileName, pathFolder string) (string, error) {
 	fileSize := file.Size / 1024
 
 	if fileSize > 500 {
-		return fmt.Sprintf("file size is %v and its too large", fileSize), fmt.Errorf("file size is too large")
+		return fmt.Sprintf("file size is %vkb and its too large, max 500kb", fileSize), fmt.Errorf("file size is too large")
 	}
 
-	filename := pathFolder + filepath.Base(file.Filename)
-	if err := c.SaveUploadedFile(file, filename); err != nil {
-		return "error save file", err
-	}
-
-	fileType := GetTypeFile(filename)
+	fileType := strings.ToLower(filepath.Ext(file.Filename))
 	imgAllow := InArray(fileType, typeExt)
 
-	if fileType == "Unknown" || imgAllow == false {
-		os.Remove(filename)
+	if imgAllow == false {
 		return "file type not support", fmt.Errorf("file type unknown")
 	}
-	newName := pathFolder + uuid.New().String() + "." + fileType
-	err = os.Rename(filename, newName)
-	if err != nil {
-		os.Remove(filename)
+
+	filename := pathFolder + uuid.New().String() + fileType
+	if err := c.SaveUploadedFile(file, filename); err != nil {
 		return "error save file", err
 	}
 
